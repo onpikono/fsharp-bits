@@ -107,3 +107,32 @@ let testNumber input =
    | Even -> printfn $"{input} is even"
    | Odd -> printfn $"{input} is odd"
 ```
+
+Another use of active patterns is to decompose data types in multiple ways, such as when the same underlying data has various possible representations. For example, a `Color` object could be decomposed into an RGB representation or an HSB representation.
+
+```fsharp
+open System.Drawing
+
+let (|RGB|) (color: Color) = (color.R, color.G, color.B)
+
+let (|RGBA|) (color: Color) = (color.R, color.G, color.B, color.A)
+
+let (|HSB|) (color: Color) =
+    (color.GetHue(), color.GetSaturation(), color.GetBrightness())
+
+let printRGB (color: Color) =
+    match color with
+    | RGB (r, g, b) -> printfn $"Red: {r}, Green: {g}, Blue: {b}"
+
+let printHSB (color: Color) =
+    match color with
+    | HSB (h, s, b) -> printfn $"Hue: {h}, Saturation: {s}, Brightness: {b}"
+
+let printAll (color: Color) =
+    printfn $"Color: {color}:"
+    color |> printRGB
+    color |> printRGBA
+    color |> printHSB
+
+printAll Color.Red
+```

@@ -54,6 +54,7 @@ type Paint =
 let paint = Paint'(2.5, "red")
 paint.Volume
 
+// Active patterns, oh boy!
 
 let (|Even|Odd|) num = if num % 2 = 0 then Even else Odd
 
@@ -63,3 +64,32 @@ let testNumber num =
     | Odd -> printfn $"{num} is odd."
 
 [ 1 .. 10 ] |> List.iter testNumber
+
+open System.Drawing
+
+let (|RGB|) (color: Color) = (color.R, color.G, color.B)
+
+let (|RGBA|) (color: Color) = (color.R, color.G, color.B, color.A)
+
+let (|HSB|) (color: Color) =
+    (color.GetHue(), color.GetSaturation(), color.GetBrightness())
+
+let printRGB (color: Color) =
+    match color with
+    | RGB (r, g, b) -> printfn $"Red: {r}, Green: {g}, Blue: {b}"
+
+let printRGBA (color: Color) =
+    match color with
+    | RGBA (r, g, b, a) -> printfn $"Red: {r}, Green: {g}, Blue: {b}, Alpha: {a}"
+
+let printHSB (color: Color) =
+    match color with
+    | HSB (h, s, b) -> printfn $"Hue: {h}, Saturation: {s}, Brightness: {b}"
+
+let printAll (color: Color) =
+    printfn $"Color: {color}:"
+    color |> printRGB
+    color |> printRGBA
+    color |> printHSB
+
+printAll Color.Red
