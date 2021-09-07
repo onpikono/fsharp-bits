@@ -56,7 +56,7 @@ paint.Volume
 
 // Active patterns, oh boy!
 
-let (|Even|Odd|) num = if num % 2 = 0 then Even else Odd
+let (|Even|Odd|) input = if input % 2 = 0 then Even else Odd
 
 let testNumber num =
     match num with
